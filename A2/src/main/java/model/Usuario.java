@@ -1,36 +1,66 @@
 package model;
 
+import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Usuario extends Endereco {
-    private int id;
+@Entity
+@Table(name = "usuario")
+public class Usuario {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "nome",nullable = false, length = 255)
     private String nome;
+
+    @Column(name = "cpf",nullable = false, unique = true, length = 11)
     private String cpf;
+
+    @Column(name = "email",nullable = false, unique = true)
     private String email;
+
+    @Column(name = "idade",nullable = false)
+    private Integer idade;
+
+    @Column(nullable = false, length = 20)
     private String telefone;
+
+    @ManyToOne(optional = false, cascade = CascadeType.ALL)
+    @JoinColumn(name = "endereco_id")
     private Endereco endereco;
-    private List<Consulta> consultas;
+
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Consulta> consultas = new ArrayList<>();
+
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at", nullable = false)
+    private LocalDateTime updatedAt;
 
     public Usuario() {
         this.consultas = new ArrayList<>();
     }
 
-    public Usuario(String nome, String cpf, String email, String telefone, Endereco endereco) {
+    public Usuario(String nome, String cpf, int idade, String email, String telefone, Endereco endereco) {
         this();
         this.nome = nome;
         this.cpf = cpf;
+        this.idade = idade;
         this.email = email;
         this.telefone = telefone;
         this.endereco = endereco;
     }
 
     // Getters e Setters
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -46,8 +76,14 @@ public class Usuario extends Endereco {
         return cpf;
     }
 
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
+    public void setCpf(String cpf) { this.cpf = cpf; }
+
+    public Integer getIdade() {
+        return idade;
+    }
+
+    public void setIdade(Integer idade) {
+        this.idade = idade;
     }
 
     public String getEmail() {

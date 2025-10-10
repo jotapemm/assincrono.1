@@ -8,16 +8,16 @@ import model.Usuario;
 
 public class UsuarioController {
     private List<Usuario> usuarios;
-    private int proximoId;
+    private Long proximoId;
 
     public UsuarioController() {
         this.usuarios = new ArrayList<>();
-        this.proximoId = 1;
+        this.proximoId = 1L;
     }
 
     // Create
-    public void criarUsuario(String nome, String cpf, String email, String telefone, Endereco endereco) {
-        Usuario usuario = new Usuario(nome, cpf, email, telefone, endereco);
+    public void criarUsuario(String nome, String cpf, int idade, String email, String telefone, Endereco endereco) {
+        Usuario usuario = new Usuario(nome, cpf, idade, email, telefone, endereco);
         usuario.setId(proximoId++);
         usuarios.add(usuario);
     }

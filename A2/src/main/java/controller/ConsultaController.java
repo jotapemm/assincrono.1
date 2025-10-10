@@ -1,22 +1,23 @@
 package controller;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-
 import model.Consulta;
 import model.Usuario;
 
 public class ConsultaController {
     private List<Consulta> consultas;
-    private int proximoId;
+    private Long proximoId;
 
     public ConsultaController() {
         this.consultas = new ArrayList<>();
-        this.proximoId = 1;
+        this.proximoId = 1L;
     }
 
     // Create
-    public void criarConsulta(String data, String hora, Usuario paciente) {
-        Consulta consulta = new Consulta(data, hora, paciente);
+    public void criarConsulta(LocalDate dataConsulta, LocalTime horaConsulta, Usuario paciente) {
+        Consulta consulta = new Consulta(dataConsulta, horaConsulta, paciente);
         consulta.setId(proximoId++);
         consultas.add(consulta);
         paciente.adicionarConsulta(consulta);
@@ -46,10 +47,10 @@ public class ConsultaController {
         return resultado;
     }
 
-    public List<Consulta> buscarConsultasPorData(String data) {
+    public List<Consulta> buscarConsultasPorData(LocalDate data) {
         List<Consulta> resultado = new ArrayList<>();
         for (Consulta consulta : consultas) {
-            if (consulta.getData().equals(data)) {
+            if (consulta.getDataConsulta().equals(data)) {
                 resultado.add(consulta);
             }
         }
@@ -57,7 +58,7 @@ public class ConsultaController {
     }
 
     // Update
-    public boolean atualizarConsulta(int id, String data, String hora, Usuario paciente) {
+    public boolean atualizarConsulta(int id, LocalDate dataConsulta, LocalTime horaConsulta, Usuario paciente) {
         Consulta consulta = buscarConsultaPorId(id);
         if (consulta != null) {
             // Remove a consulta da lista do paciente antigo
@@ -65,8 +66,8 @@ public class ConsultaController {
                 consulta.getPaciente().removerConsulta(consulta);
             }
             
-            consulta.setData(data);
-            consulta.setHora(hora);
+            consulta.setDataConsulta(dataConsulta);
+            consulta.setHoraConsulta(horaConsulta);
             consulta.setPaciente(paciente);
             
             // Adiciona a consulta à lista do novo paciente
@@ -112,11 +113,11 @@ public class ConsultaController {
         return false;
     }
 
-    public boolean reagendarConsulta(int id, String novaData, String novaHora) {
+    public boolean reagendarConsulta(int id, LocalDate novaData, LocalTime novaHora) {
         Consulta consulta = buscarConsultaPorId(id);
         if (consulta != null) {
-            consulta.setData(novaData);
-            consulta.setHora(novaHora);
+            consulta.setDataConsulta(novaData);
+            consulta.setHoraConsulta(novaHora);
             consulta.reagendar();
             return true;
         }

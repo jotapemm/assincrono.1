@@ -1,5 +1,7 @@
 package view;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Scanner;
 
@@ -209,7 +211,8 @@ public class VisaoPrincipal {
         Usuario usuario = usuarioView.lerDadosUsuario();
         usuarioController.criarUsuario(
             usuario.getNome(), 
-            usuario.getCpf(), 
+            usuario.getCpf(),
+            usuario.getIdade(),
             usuario.getEmail(), 
             usuario.getTelefone(), 
             usuario.getEndereco()
@@ -335,9 +338,9 @@ public class VisaoPrincipal {
         Usuario paciente = usuarioController.buscarUsuarioPorId(idPaciente);
         
         if (paciente != null) {
-            String data = consultaView.lerData();
-            String hora = consultaView.lerHora();
-            consultaController.criarConsulta(data, hora, paciente);
+            LocalDate dataConsulta = consultaView.lerData();
+            LocalTime horaConsulta = consultaView.lerHora();
+            consultaController.criarConsulta(dataConsulta, horaConsulta, paciente);
             consultaView.exibirMensagemSucesso();
         } else {
             consultaView.exibirMensagem("Paciente nao encontrado!");
@@ -367,7 +370,7 @@ public class VisaoPrincipal {
     }
 
     private void buscarConsultasPorData() {
-        String data = consultaView.lerData();
+        LocalDate data = consultaView.lerData();
         List<Consulta> consultas = consultaController.buscarConsultasPorData(data);
         consultaView.exibirConsultas(consultas);
     }
@@ -379,8 +382,8 @@ public class VisaoPrincipal {
         Usuario paciente = usuarioController.buscarUsuarioPorId(idPaciente);
         
         if (paciente != null) {
-            String data = consultaView.lerData();
-            String hora = consultaView.lerHora();
+            LocalDate data = consultaView.lerData();
+            LocalTime hora = consultaView.lerHora();
             boolean sucesso = consultaController.atualizarConsulta(id, data, hora, paciente);
             if (sucesso) {
                 consultaView.exibirMensagemSucesso();
@@ -414,8 +417,8 @@ public class VisaoPrincipal {
 
     private void reagendarConsulta() {
         int id = consultaView.lerIdConsulta();
-        String novaData = consultaView.lerNovaData();
-        String novaHora = consultaView.lerNovaHora();
+        LocalDate novaData = consultaView.lerNovaData();
+        LocalTime novaHora = consultaView.lerNovaHora();
         boolean sucesso = consultaController.reagendarConsulta(id, novaData, novaHora);
         if (sucesso) {
             consultaView.exibirMensagemSucesso();

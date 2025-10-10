@@ -1,50 +1,63 @@
 package model;
 
-public class Consulta {
-    private int id;
-    private String data;
-    private String hora;
-    private Usuario paciente;
-    private StatusConsulta status;
+import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
+@Entity
+@Table(name = "consulta")
+public class Consulta {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "usuario_id", nullable = false)
+    private Usuario paciente;
+
+    @Column(name = "data_consulta", nullable = false)
+    private LocalDate dataConsulta;
+
+    @Column(name = "hora_consulta", nullable = false)
+    private LocalTime horaConsulta;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private StatusConsulta status = StatusConsulta.AGENDADA;
+
+    @Column(columnDefinition = "TEXT")
+    private String observacoes;
+
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private LocalDateTime createdAt = LocalDateTime.now();
+
+    @Column(name = "updated_at", nullable = false)
+    private LocalDateTime updatedAt = LocalDateTime.now();
+
+    // Enum
     public enum StatusConsulta {
         AGENDADA, CONFIRMADA, CANCELADA, REAGENDADA
     }
 
-    public Consulta() {
+    // Construtores
+    public Consulta() {}
+
+    public Consulta(LocalDate dataConsulta, LocalTime horaConsulta, Usuario paciente) {
+        this.dataConsulta = dataConsulta;
+        this.horaConsulta = horaConsulta;
+        this.paciente = paciente;
         this.status = StatusConsulta.AGENDADA;
     }
 
-    public Consulta(String data, String hora, Usuario paciente) {
-        this();
-        this.data = data;
-        this.hora = hora;
-        this.paciente = paciente;
-    }
-
     // Getters e Setters
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getData() {
-        return data;
-    }
-
-    public void setData(String data) {
-        this.data = data;
-    }
-
-    public String getHora() {
-        return hora;
-    }
-
-    public void setHora(String hora) {
-        this.hora = hora;
     }
 
     public Usuario getPaciente() {
@@ -55,6 +68,22 @@ public class Consulta {
         this.paciente = paciente;
     }
 
+    public LocalDate getDataConsulta() {
+        return dataConsulta;
+    }
+
+    public void setDataConsulta(LocalDate dataConsulta) {
+        this.dataConsulta = dataConsulta;
+    }
+
+    public LocalTime getHoraConsulta() {
+        return horaConsulta;
+    }
+
+    public void setHoraConsulta(LocalTime horaConsulta) {
+        this.horaConsulta = horaConsulta;
+    }
+
     public StatusConsulta getStatus() {
         return status;
     }
@@ -63,6 +92,31 @@ public class Consulta {
         this.status = status;
     }
 
+    public String getObservacoes() {
+        return observacoes;
+    }
+
+    public void setObservacoes(String observacoes) {
+        this.observacoes = observacoes;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    // Métodos de negócio
     public void cancelar() {
         this.status = StatusConsulta.CANCELADA;
     }
@@ -77,10 +131,12 @@ public class Consulta {
 
     @Override
     public String toString() {
-        return "ID: " + id + 
-               "\nData: " + data + 
-               "\nHora: " + hora + 
-               "\nPaciente: " + (paciente != null ? paciente.getNome() : "Nao informado") + 
-               "\nStatus: " + status;
+        return "Consulta {" +
+                "\nid = " + id +
+                ",\ndata = " + dataConsulta +
+                ",\nhora = " + horaConsulta +
+                ",\npaciente = " + (paciente != null ? paciente.getNome() : "Não informado") +
+                ",\nstatus = " + status +
+                "\n}";
     }
 }

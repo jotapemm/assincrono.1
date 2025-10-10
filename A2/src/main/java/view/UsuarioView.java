@@ -33,6 +33,9 @@ public class UsuarioView {
         
         System.out.print("CPF: ");
         String cpf = scanner.nextLine();
+
+        System.out.println("Idade: ");
+        int idade = scanner.nextInt();
         
         System.out.print("Email: ");
         String email = scanner.nextLine();
@@ -57,7 +60,7 @@ public class UsuarioView {
         String cep = scanner.nextLine();
         
         Endereco endereco = new Endereco(estado, cidade, rua, numero, cep);
-        return new Usuario(nome, cpf, email, telefone, endereco);
+        return new Usuario(nome, cpf, idade, email, telefone, endereco);
     }
 
     public void exibirUsuarios(List<Usuario> usuarios) {
@@ -105,6 +108,9 @@ public class UsuarioView {
         
         System.out.print("CPF: ");
         String cpf = scanner.nextLine();
+
+        System.out.println("Idade: ");
+        int idade = scanner.nextInt();
         
         System.out.print("Email: ");
         String email = scanner.nextLine();
@@ -129,7 +135,7 @@ public class UsuarioView {
         String cep = scanner.nextLine();
         
         Endereco endereco = new Endereco(estado, cidade, rua, numero, cep);
-        return new Usuario(nome, cpf, email, telefone, endereco);
+        return new Usuario(nome, cpf, idade, email, telefone, endereco);
     }
 
     public void exibirMensagem(String mensagem) {

@@ -1,5 +1,8 @@
 package view;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Scanner;
 
@@ -29,14 +32,20 @@ public class ConsultaView {
         System.out.print("Escolha uma opcao: ");
     }
 
-    public String lerData() {
+    public LocalDate lerData() {
         System.out.print("Digite a data (DD/MM/AAAA): ");
-        return scanner.nextLine();
+        String input = scanner.nextLine();
+
+        DateTimeFormatter formatoData = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        return LocalDate.parse(input, formatoData);
     }
 
-    public String lerHora() {
+    public LocalTime lerHora() {
         System.out.print("Digite a hora (HH:MM): ");
-        return scanner.nextLine();
+        String input = scanner.nextLine();
+
+        DateTimeFormatter formatoHora = DateTimeFormatter.ofPattern("HH:mm");
+        return LocalTime.parse(input, formatoHora);
     }
 
     public int lerIdPaciente() {
@@ -90,14 +99,20 @@ public class ConsultaView {
         System.out.print("Escolha uma opcao: ");
     }
 
-    public String lerNovaData() {
+    public LocalDate lerNovaData() {
         System.out.print("Digite a nova data (DD/MM/AAAA): ");
-        return scanner.nextLine();
+        String input = scanner.nextLine();
+
+        DateTimeFormatter formatoData = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        return LocalDate.parse(input, formatoData);
     }
 
-    public String lerNovaHora() {
+    public LocalTime lerNovaHora() {
         System.out.print("Digite a nova hora (HH:MM): ");
-        return scanner.nextLine();
+        String input = scanner.nextLine();
+
+        DateTimeFormatter formatoHora = DateTimeFormatter.ofPattern("HH:mm");
+        return LocalTime.parse(input, formatoHora);
     }
 
     public void exibirMensagem(String mensagem) {
