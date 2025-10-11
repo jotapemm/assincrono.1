@@ -35,7 +35,7 @@ public class UsuarioView {
         String cpf = scanner.nextLine();
 
         System.out.println("Idade: ");
-        int idade = scanner.nextInt();
+        int idade = Integer.parseInt(scanner.nextLine());
         
         System.out.print("Email: ");
         String email = scanner.nextLine();
@@ -110,7 +110,7 @@ public class UsuarioView {
         String cpf = scanner.nextLine();
 
         System.out.println("Idade: ");
-        int idade = scanner.nextInt();
+        int idade = Integer.parseInt(scanner.nextLine());
         
         System.out.print("Email: ");
         String email = scanner.nextLine();

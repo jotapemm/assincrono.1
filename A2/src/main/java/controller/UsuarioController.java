@@ -1,75 +1,60 @@
 package controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import dao.UsuarioDAO;
 import model.Endereco;
 import model.Usuario;
 
+import java.util.List;
+
 public class UsuarioController {
-    private List<Usuario> usuarios;
-    private Long proximoId;
+
+    private final UsuarioDAO usuarioDAO;
 
     public UsuarioController() {
-        this.usuarios = new ArrayList<>();
-        this.proximoId = 1L;
+        this.usuarioDAO = new UsuarioDAO();
     }
 
     // Create
     public void criarUsuario(String nome, String cpf, int idade, String email, String telefone, Endereco endereco) {
         Usuario usuario = new Usuario(nome, cpf, idade, email, telefone, endereco);
-        usuario.setId(proximoId++);
-        usuarios.add(usuario);
+        usuarioDAO.create(usuario);
     }
 
     // Read
     public List<Usuario> listarUsuarios() {
-        return new ArrayList<>(usuarios);
+        return usuarioDAO.listAll();
     }
 
     public Usuario buscarUsuarioPorId(int id) {
-        for (Usuario usuario : usuarios) {
-            if (usuario.getId() == id) {
-                return usuario;
-            }
-        }
-        return null;
+        if (id <= 0) return null;
+        return usuarioDAO.findById(id);
     }
 
     public Usuario buscarUsuarioPorCpf(String cpf) {
-        for (Usuario usuario : usuarios) {
-            if (usuario.getCpf().equals(cpf)) {
-                return usuario;
-            }
-        }
-        return null;
+        if (cpf == null || cpf.isBlank()) return null;
+        return usuarioDAO.findByCpf(cpf);
     }
 
     // Update
-    public boolean atualizarUsuario(int id, String nome, String cpf, String email, String telefone, Endereco endereco) {
-        Usuario usuario = buscarUsuarioPorId(id);
-        if (usuario != null) {
-            usuario.setNome(nome);
-            usuario.setCpf(cpf);
-            usuario.setEmail(email);
-            usuario.setTelefone(telefone);
-            usuario.setEndereco(endereco);
-            return true;
-        }
-        return false;
+    public boolean atualizarUsuario(int id, String nome, String cpf, int idade, String email, String telefone, Endereco endereco) {
+        Usuario existente = buscarUsuarioPorId(id);
+        if (existente == null) return false;
+        existente.setNome(nome);
+        existente.setCpf(cpf);
+        existente.setIdade(idade);
+        existente.setEmail(email);
+        existente.setTelefone(telefone);
+        existente.setEndereco(endereco);
+        return usuarioDAO.update(existente);
     }
 
     // Delete
     public boolean deletarUsuario(int id) {
-        Usuario usuario = buscarUsuarioPorId(id);
-        if (usuario != null) {
-            usuarios.remove(usuario);
-            return true;
-        }
-        return false;
+        if (id <= 0) return false;
+        return usuarioDAO.delete(id);
     }
 
     public int getTotalUsuarios() {
-        return usuarios.size();
+        return usuarioDAO.count();
     }
 }
