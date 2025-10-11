@@ -244,6 +244,7 @@ public class VisaoPrincipal {
             id, 
             usuario.getNome(), 
             usuario.getCpf(), 
+            usuario.getIdade(),
             usuario.getEmail(), 
             usuario.getTelefone(), 
             usuario.getEndereco()
