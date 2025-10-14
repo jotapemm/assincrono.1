@@ -37,7 +37,7 @@ public final class ConnectionFactory {
 
         jdbcUrl = firstNonBlank(envUrl, properties.getProperty("db.url"),
                 "jdbc:postgresql://localhost:5432/consultasdb");
-        jdbcUser = firstNonBlank(envUser, properties.getProperty("db.user"), "root");
+        jdbcUser = firstNonBlank(envUser, properties.getProperty("db.user"), "postgres");
         jdbcPassword = Objects.toString(firstNonBlank(envPass, properties.getProperty("db.password"), "root"));
     }
 

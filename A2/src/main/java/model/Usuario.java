@@ -13,26 +13,26 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "nome",nullable = false, length = 255)
+    @Column(name = "nome", nullable = false, length = 255)
     private String nome;
 
-    @Column(name = "cpf",nullable = false, unique = true, length = 11)
+    @Column(name = "cpf", nullable = false, unique = true, length = 11)
     private String cpf;
 
-    @Column(name = "email",nullable = false, unique = true)
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
 
-    @Column(name = "idade",nullable = false)
+    @Column(name = "idade", nullable = false)
     private Integer idade;
 
-    @Column(nullable = false, length = 20)
+    @Column(name = "telefone", nullable = false, length = 20)
     private String telefone;
 
-    @ManyToOne(optional = false, cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "endereco_id")
     private Endereco endereco;
 
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Consulta> consultas = new ArrayList<>();
 
     @Column(name = "created_at", nullable = false, updatable = false)
@@ -76,7 +76,9 @@ public class Usuario {
         return cpf;
     }
 
-    public void setCpf(String cpf) { this.cpf = cpf; }
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
 
     public Integer getIdade() {
         return idade;
@@ -126,16 +128,6 @@ public class Usuario {
         this.consultas.remove(consulta);
     }
 
-    @Override
-    public String toString() {
-        return "ID: " + id + 
-               "\nNome: " + nome + 
-               "\nCPF: " + cpf + 
-               "\nEmail: " + email + 
-               "\nTelefone: " + telefone + 
-               "\nEndereco: " + (endereco != null ? endereco.toString() : "Nao informado");
-    }
-
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
@@ -150,5 +142,15 @@ public class Usuario {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    @Override
+    public String toString() {
+        return "ID: " + id +
+                "\nNome: " + nome +
+                "\nCPF: " + cpf +
+                "\nEmail: " + email +
+                "\nTelefone: " + telefone +
+                "\nEndereco: " + (endereco != null ? endereco.toString() : "Nao informado");
     }
 }

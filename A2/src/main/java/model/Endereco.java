@@ -1,13 +1,31 @@
 package model;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "endereco")
 public class Endereco {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    @Column(name = "estado", nullable = false, length = 2)
     private String estado;
+
+    @Column(name = "cidade", nullable = false, length = 100)
     private String cidade;
+
+    @Column(name = "rua", nullable = false, length = 255)
     private String rua;
-    private String numero;
+
+    @Column(name = "cep", nullable = false, length = 10)
     private String cep;
 
+    @Column(name = "numero", nullable = false, length = 20)
+    private String numero;
+
+    // Construtores
     public Endereco() {}
 
     public Endereco(String estado, String cidade, String rua, String numero, String cep) {
@@ -17,7 +35,6 @@ public class Endereco {
         this.numero = numero;
         this.cep = cep;
     }
-
 
     // Getters e Setters
     public int getId() {
