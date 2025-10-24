@@ -6,6 +6,10 @@ import model.Usuario;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.YearMonth;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -114,6 +118,40 @@ public class ConsultaDAO {
         } catch (SQLException e) {
             throw new RuntimeException("Erro ao buscar consultas por data", e);
         }
+    }
+
+    // Agenda via VIEW (vw_agenda_consultas)
+    public List<Consulta> agendaPorPeriodo(LocalDate dataInicio, LocalDate dataFim) {
+        final String sql = "SELECT id, usuario_id, data_consulta, hora_consulta, status, observacoes, u_nome, u_cpf " +
+                "FROM vw_agenda_consultas WHERE data_consulta BETWEEN ? AND ? ORDER BY data_consulta, hora_consulta";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setDate(1, Date.valueOf(dataInicio));
+            ps.setDate(2, Date.valueOf(dataFim));
+            try (ResultSet rs = ps.executeQuery()) {
+                List<Consulta> list = new ArrayList<>();
+                while (rs.next()) list.add(map(rs));
+                return list;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao buscar agenda por periodo", e);
+        }
+    }
+
+    public List<Consulta> agendaDiaria(LocalDate data) {
+        return agendaPorPeriodo(data, data);
+    }
+
+    public List<Consulta> agendaSemanal(LocalDate dataReferencia) {
+        LocalDate inicioSemana = dataReferencia.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+        LocalDate fimSemana = dataReferencia.with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY));
+        return agendaPorPeriodo(inicioSemana, fimSemana);
+    }
+
+    public List<Consulta> agendaMensal(YearMonth mes) {
+        LocalDate inicio = mes.atDay(1);
+        LocalDate fim = mes.atEndOfMonth();
+        return agendaPorPeriodo(inicio, fim);
     }
 
     public boolean updateStatus(long id, Consulta.StatusConsulta status) {

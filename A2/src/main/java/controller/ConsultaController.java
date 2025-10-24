@@ -6,6 +6,7 @@ import model.Usuario;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.YearMonth;
 import java.util.List;
 
 public class ConsultaController {
@@ -40,6 +41,19 @@ public class ConsultaController {
 
     public List<Consulta> buscarConsultasPorData(LocalDate data) {
         return consultaDAO.findByDate(data);
+    }
+
+    // Agenda - periodizada
+    public List<Consulta> agendaDiaria(LocalDate data) {
+        return consultaDAO.agendaDiaria(data);
+    }
+
+    public List<Consulta> agendaSemanal(LocalDate dataReferencia) {
+        return consultaDAO.agendaSemanal(dataReferencia);
+    }
+
+    public List<Consulta> agendaMensal(YearMonth mes) {
+        return consultaDAO.agendaMensal(mes);
     }
 
     // Update
