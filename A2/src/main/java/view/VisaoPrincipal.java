@@ -2,6 +2,7 @@ package view;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.YearMonth;
 import java.util.List;
 import java.util.Scanner;
 
@@ -192,6 +193,15 @@ public class VisaoPrincipal {
                     case 10:
                         deletarConsulta();
                         break;
+                    case 11:
+                        verAgendaDiaria();
+                        break;
+                    case 12:
+                        verAgendaSemanal();
+                        break;
+                    case 13:
+                        verAgendaMensal();
+                        break;
                     case 0:
                         break;
                     default:
@@ -376,6 +386,29 @@ public class VisaoPrincipal {
         consultaView.exibirConsultas(consultas);
     }
 
+    private void verAgendaDiaria() {
+        LocalDate data = consultaView.lerData();
+        List<Consulta> consultas = consultaController.agendaDiaria(data);
+        consultaView.exibirConsultas(consultas);
+    }
+
+    private void verAgendaSemanal() {
+        LocalDate dataRef = consultaView.lerData();
+        List<Consulta> consultas = consultaController.agendaSemanal(dataRef);
+        consultaView.exibirConsultas(consultas);
+    }
+
+    private void verAgendaMensal() {
+        int ano = consultaView.lerAno();
+        int mes = consultaView.lerMes();
+        if (ano > 0 && mes >= 1 && mes <= 12) {
+            YearMonth ym = YearMonth.of(ano, mes);
+            List<Consulta> consultas = consultaController.agendaMensal(ym);
+            consultaView.exibirConsultas(consultas);
+        } else {
+            consultaView.exibirMensagem("Dados de ano/mes invalidos!");
+        }
+    }
     private void atualizarConsulta() {
         int id = consultaView.lerIdConsulta();
         consultaView.exibirListaPacientes(usuarioController.listarUsuarios());

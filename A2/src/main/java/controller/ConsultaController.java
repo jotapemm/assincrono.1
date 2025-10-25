@@ -6,6 +6,7 @@ import model.Usuario;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.YearMonth;
 import java.util.List;
 
 public class ConsultaController {
@@ -42,6 +43,17 @@ public class ConsultaController {
         return consultaDAO.findByDate(data);
     }
 
+    public List<Consulta> agendaDiaria(LocalDate data) {
+        return consultaDAO.agendaDiaria(data);
+    }
+
+    public List<Consulta> agendaSemanal(LocalDate dataReferencia) {
+        return consultaDAO.agendaSemanal(dataReferencia);
+    }
+
+    public List<Consulta> agendaMensal(YearMonth mes) {
+        return consultaDAO.agendaMensal(mes);
+    }
     // Update
     public boolean atualizarConsulta(int id, LocalDate dataConsulta, LocalTime horaConsulta, Usuario paciente) {
         Consulta existente = buscarConsultaPorId(id);

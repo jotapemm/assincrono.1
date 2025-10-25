@@ -28,6 +28,9 @@ public class ConsultaView {
         System.out.println("8. Confirmar Consulta");
         System.out.println("9. Reagendar Consulta");
         System.out.println("10. Deletar Consulta");
+        System.out.println("11. Ver Agenda Diaria");
+        System.out.println("12. Ver Agenda Semanal");
+        System.out.println("13. Ver Agenda Mensal");
         System.out.println("0. Voltar ao Menu Principal");
         System.out.print("Escolha uma opcao: ");
     }
@@ -40,6 +43,25 @@ public class ConsultaView {
         return LocalDate.parse(input, formatoData);
     }
 
+    public int lerMes() {
+        System.out.print("Digite o mes (1-12): ");
+        try {
+            return Integer.parseInt(scanner.nextLine());
+        } catch (NumberFormatException e) {
+            System.out.println("Mes invalido!");
+            return -1;
+        }
+    }
+
+    public int lerAno() {
+        System.out.print("Digite o ano (YYYY): ");
+        try {
+            return Integer.parseInt(scanner.nextLine());
+        } catch (NumberFormatException e) {
+            System.out.println("Ano invalido!");
+            return -1;
+        }
+    }
     public LocalTime lerHora() {
         System.out.print("Digite a hora (HH:MM): ");
         String input = scanner.nextLine();
@@ -75,7 +97,13 @@ public class ConsultaView {
         } else {
             for (Consulta consulta : consultas) {
                 System.out.println("----------------------------------------");
-                System.out.println(consulta.toString());
+                System.out.println(
+                        "ID: " + consulta.getId() +
+                                "\nData: " + consulta.getDataConsulta() +
+                                "\nHora: " + consulta.getHoraConsulta() +
+                                "\nPaciente: " + (consulta.getPaciente() != null ? consulta.getPaciente().getNome() : "-") +
+                                "\nStatus: " + consulta.getStatus()
+                );
                 System.out.println("----------------------------------------");
             }
         }
@@ -107,7 +135,7 @@ public class ConsultaView {
         return LocalDate.parse(input, formatoData);
     }
 
-    public LocalTime lerNovaHora() {
+    public LocalTime     lerNovaHora() {
         System.out.print("Digite a nova hora (HH:MM): ");
         String input = scanner.nextLine();
 
